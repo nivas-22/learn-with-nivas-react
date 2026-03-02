@@ -8,7 +8,7 @@ function Features() {
 
       <div className="card">
         <h3>⚙ CI/CD Automation</h3>
-        <p>CodePipeline, GitHub Actions, Jenkins, Docker.</p>
+        <p>CodePipeline, GitHub Actions, Jenkins, Concourse.</p>
       </div>
 
       <div className="card">

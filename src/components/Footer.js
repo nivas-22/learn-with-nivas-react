@@ -16,8 +16,20 @@ function Footer() {
         >
           YouTube
         </a>
-        <a href="#">GitHub</a>
-        <a href="#">LinkedIn</a>
+        <a
+          href="https://github.com/nivas-22"
+          target="_blank"
+          rel="noreferrer"
+        >
+          GitHub
+        </a>
+        <a
+          href="https://www.linkedin.com/in/iamnivas"
+          target="_blank"
+          rel="noreferrer"
+        >
+          LinkedIn
+        </a>
       </div>
 
       <p className="copyright">

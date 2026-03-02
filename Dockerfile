@@ -1,15 +1,15 @@
 # Stage 1 - Build React App
-FROM node:18-alpine AS builder
+FROM public.ecr.aws/docker/library/node:18-alpine AS builder
 
 WORKDIR /app
 COPY package*.json ./
-RUN npm install
+RUN npm ci
 
 COPY . .
 RUN npm run build
 
 # Stage 2 - Nginx Production Server
-FROM nginx:stable-alpine
+FROM public.ecr.aws/docker/library/nginx:stable-alpine
 
 COPY --from=builder /app/build /usr/share/nginx/html
 COPY nginx.conf /etc/nginx/conf.d/default.conf

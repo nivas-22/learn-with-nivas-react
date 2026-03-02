@@ -1,23 +1,36 @@
 version: 0.2
 
+env:
+  variables:
+    REGION: ap-south-1
+    REPO_NAME: learn-with-nivas-react
+
 phases:
   pre_build:
     commands:
+      - echo Getting AWS Account ID...
       - ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
-      - REGION=us-east-1
-      - REPO_NAME=learn-with-nivas-react
       - REPOSITORY_URI=$ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/$REPO_NAME
-      - aws ecr get-login-password | docker login --username AWS --password-stdin $REPOSITORY_URI
+      - echo Logging in to Amazon ECR...
+      - aws ecr get-login-password --region $REGION | docker login --username AWS --password-stdin $REPOSITORY_URI
+      - IMAGE_TAG=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
 
   build:
     commands:
+      - echo Build started on `date`
+      - echo Building Docker image...
       - docker build -t $REPO_NAME .
       - docker tag $REPO_NAME:latest $REPOSITORY_URI:latest
+      - docker tag $REPO_NAME:latest $REPOSITORY_URI:$IMAGE_TAG
 
   post_build:
     commands:
+      - echo Pushing Docker images...
       - docker push $REPOSITORY_URI:latest
-      - printf '[{"name":"react-container","imageUri":"%s"}]' $REPOSITORY_URI:latest > imagedefinitions.json
+      - docker push $REPOSITORY_URI:$IMAGE_TAG
+      - echo Writing imagedefinitions.json...
+      - printf '[{"name":"react-container","imageUri":"%s"}]' $REPOSITORY_URI:$IMAGE_TAG > imagedefinitions.json
+      - cat imagedefinitions.json
 
 artifacts:
   files:

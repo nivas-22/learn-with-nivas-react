@@ -33,7 +33,7 @@ function Footer() {
       </div>
 
       <p className="copyright">
-        © 2026 Learn with Nivas. All rights are reserved.
+        © 2026 Learn with Nivas. All rights reserved.
       </p>
     </footer>
   );
